@@ -143,16 +143,10 @@ def time_av(message:str) -> None:
         if message.text == ((datetime.datetime.now() + delta * i).strftime("%a")):
             delta_date = datetime.timedelta(days=int(i))
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    time1 = types.KeyboardButton(
-        (message.text + ", " + (my_datetime + delta_date).strftime("%d.%m") + ", " + " 09:00-12:00"))
-    time2 = types.KeyboardButton(
-        (message.text + ", " + (my_datetime + delta_date).strftime("%d.%m") + ", " + " 13:00-16:00"))
-    time3 = types.KeyboardButton(
-        (message.text + ", " + (my_datetime + delta_date).strftime("%d.%m") + ", " + " 17:00-20:00"))
+    for time_str in ["09:00-12:00", "13:00-16:00", "17:00-20:00"]:
+        time_formated=(my_datetime + delta_date).strftime("%d.%m")
+        markup.add(types.KeyboardButton(f"{message.text}, {time_formated},  {time_str}"))
     back = types.KeyboardButton("Go back")
-    markup.add(time1)
-    markup.add(time2)
-    markup.add(time3)
     markup.add(back)
     bot.send_message(message.chat.id,
                      text="Choose time",
@@ -179,16 +173,12 @@ def booking(message:str) -> None:
         print(type(usrname))
         print(line)
         if clients:
-            check = 0
             for val_list in val:
                 if line == val_list[0:3]:
-                    check = 1
                     bot.send_message(message.chat.id,
                                      text=f"This time is already booked, sorry")
-                    break
-            if check:
-                pass
-            elif not usrname:
+                    return
+            if not usrname:
                 bot.send_message(message.chat.id,
                                  text=f"Dear {message.from_user.first_name}, please add username in Telegram setting in order to continue booking process.")
             elif usrname in comp:
@@ -234,6 +224,5 @@ def func(message):
         booking(message)
     else:
         other(message)
-
 if __name__ == '__main__':
     bot.polling(none_stop=True, interval=1)
