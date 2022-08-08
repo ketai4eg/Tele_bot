@@ -6,14 +6,27 @@ import json
 
 bot = telebot.TeleBot(config.token)
 
+#messages list
+msg_hi="👋 Hi!"
+msg_go_booking="❓ Let's go to the booking"
+msg_contact="📞 Do you want my contacts"
+msg_address="🌍 My address"
+msg_gel="Gel"
+msg_extension="Extension"
+msg_simple="Simple Manicure"
+msg_back="Go back"
+msg_book_it="💅 Let's book it!"
+
+
+
 #start screen
 @bot.message_handler(commands=['start'])
 def start(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    btn1 = types.KeyboardButton("👋 Hi!")
-    btn2 = types.KeyboardButton("❓ Let's go to the booking")
-    btn3 = types.KeyboardButton("📞 Do you want my contacts")
-    btn4 = types.KeyboardButton("🌍 My address")
+    btn1 = types.KeyboardButton(msg_hi)
+    btn2 = types.KeyboardButton(msg_go_booking)
+    btn3 = types.KeyboardButton(msg_contact)
+    btn4 = types.KeyboardButton(msg_address)
     markup.add(btn1)
     markup.add(btn2)
     markup.add(btn3)
@@ -56,12 +69,12 @@ def hi(message:str) -> None:
 
 #message Nail Type
 def nail_types(message:str) -> None:
-    if (message.text == "❓ Let's go to the booking"):
+    if (message.text == msg_go_booking):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        markup.add(types.KeyboardButton("Gel"))
-        markup.add(types.KeyboardButton("Extension"))
-        markup.add(types.KeyboardButton("Simple Manicure"))
-        markup.add(types.KeyboardButton("Go back"))
+        markup.add(types.KeyboardButton(msg_gel))
+        markup.add(types.KeyboardButton(msg_extension))
+        markup.add(types.KeyboardButton(msg_simple))
+        markup.add(types.KeyboardButton(msg_back))
         bot.send_message(message.chat.id, text="What do you want to have?", reply_markup=markup)
 
 #message Contacts
@@ -81,25 +94,25 @@ def address(message:str) -> None:
 #Prices
 def prices(message:str) -> None:
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    button1 = types.KeyboardButton("💅 Let's book it!")
-    button2 = types.KeyboardButton("Go back")
+    button1 = types.KeyboardButton(msg_book_it)
+    button2 = types.KeyboardButton(msg_back)
     markup.add(button1)
     markup.add(button2)
-    if message.text == "Gel":
+    if message.text == msg_gel:
         price=config.gel_price
-    elif message.text == "Extension":
+    elif message.text == msg_extension:
         price=config.extension_price
-    elif message.text == "Simple Manicure":
+    elif message.text == msg_simple:
         price=config.simple_price
     bot.send_message(message.chat.id, text=f"Price is {price} €. Do you want to book an apointment?", reply_markup=markup)
 
 #Go to the first page
 def go_back(message:str) -> None:
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    markup.add(types.KeyboardButton("👋 Hi!"))
-    markup.add(types.KeyboardButton("❓ Let's go to the booking"))
-    markup.add(types.KeyboardButton("📞 Do you want my contacts"))
-    markup.add(types.KeyboardButton("🌍 My address"))
+    markup.add(types.KeyboardButton(msg_hi))
+    markup.add(types.KeyboardButton(msg_go_booking))
+    markup.add(types.KeyboardButton(msg_contact))
+    markup.add(types.KeyboardButton(msg_address))
     bot.send_message(message.chat.id, text="Again we are here: what do you want to have?", reply_markup=markup)
 
 #Next week drawing
@@ -110,7 +123,7 @@ def next_week_days(message:str) -> None:
     for i in range(1,8):
         day_formated=(my_datetime + delta * i).strftime("%a")
         markup.add(types.KeyboardButton(f"{day_formated}"))
-    back = types.KeyboardButton("Go back")
+    back = types.KeyboardButton(msg_back)
     markup.add(back)
     bot.send_message(message.chat.id,
                      text="Choose any day of next week",
@@ -127,7 +140,7 @@ def time_av(message:str) -> None:
     for time_str in ["09:00-12:00", "13:00-16:00", "17:00-20:00"]:
         time_formated=(my_datetime + delta_date).strftime("%d.%m")
         markup.add(types.KeyboardButton(f"{message.text}, {time_formated},  {time_str}"))
-    back = types.KeyboardButton("Go back")
+    back = types.KeyboardButton(msg_back)
     markup.add(back)
     bot.send_message(message.chat.id,
                      text="Choose time",
@@ -185,19 +198,19 @@ def booking(message:str) -> None:
 #main message treatment
 @bot.message_handler(content_types=['text'])
 def func(message):
-    if (message.text == "👋 Hi!"):
+    if (message.text == msg_hi):
         hi(message)
-    elif (message.text == "❓ Let's go to the booking"):
+    elif (message.text == msg_go_booking):
         nail_types(message)
-    elif (message.text == "📞 Do you want my contacts"):
+    elif (message.text == msg_contact):
         contact(message)
-    elif (message.text == "🌍 My address"):
+    elif (message.text == msg_address):
         address(message)
-    elif (message.text == "Gel" or message.text == "Extension" or message.text == "Simple Manicure"):
+    elif (message.text == msg_gel or message.text == msg_extension or message.text == msg_simple):
         prices(message)
-    elif (message.text == "Go back"):
+    elif (message.text == msg_back):
         go_back(message)
-    elif (message.text == "💅 Let's book it!"):
+    elif (message.text == msg_book_it):
         next_week_days(message)
     elif (message.text in ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]):
         time_av(message)
