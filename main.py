@@ -1,5 +1,5 @@
 import telebot
-from telebot import types  # для указание типов
+from telebot import types
 import config
 import datetime
 import json
@@ -235,4 +235,5 @@ def func(message):
     else:
         other(message)
 
-bot.polling(none_stop=True, interval=1)
+if __name__ == '__main__':
+    bot.polling(none_stop=True, interval=1)
