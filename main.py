@@ -58,14 +58,10 @@ def hi(message:str) -> None:
 def nail_types(message:str) -> None:
     if (message.text == "❓ Let's go to the booking"):
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-        btn1 = types.KeyboardButton("Gel")
-        btn2 = types.KeyboardButton("Extension")
-        btn3 = types.KeyboardButton("Simple Manicure")
-        back = types.KeyboardButton("Go back")
-        markup.add(btn1)
-        markup.add(btn2)
-        markup.add(btn3)
-        markup.add(back)
+        markup.add(types.KeyboardButton("Gel"))
+        markup.add(types.KeyboardButton("Extension"))
+        markup.add(types.KeyboardButton("Simple Manicure"))
+        markup.add(types.KeyboardButton("Go back"))
         bot.send_message(message.chat.id, text="What do you want to have?", reply_markup=markup)
 
 #message Contacts
@@ -100,14 +96,10 @@ def prices(message:str) -> None:
 #Go to the first page
 def go_back(message:str) -> None:
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    btn1 = types.KeyboardButton("👋 Hi!")
-    btn2 = types.KeyboardButton("❓ Let's go to the booking")
-    btn3 = types.KeyboardButton("📞 Do you want my contacts")
-    btn4 = types.KeyboardButton("🌍 My address")
-    markup.add(btn1)
-    markup.add(btn2)
-    markup.add(btn3)
-    markup.add(btn4)
+    markup.add(types.KeyboardButton("👋 Hi!"))
+    markup.add(types.KeyboardButton("❓ Let's go to the booking"))
+    markup.add(types.KeyboardButton("📞 Do you want my contacts"))
+    markup.add(types.KeyboardButton("🌍 My address"))
     bot.send_message(message.chat.id, text="Again we are here: what do you want to have?", reply_markup=markup)
 
 #Next week drawing
@@ -115,21 +107,10 @@ def next_week_days(message:str) -> None:
     my_datetime = datetime.datetime.now()
     delta = datetime.timedelta(days=1)
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    day1 = types.KeyboardButton(str((my_datetime + delta * 1).strftime("%a")))
-    day2 = types.KeyboardButton(str((my_datetime + delta * 2).strftime("%a")))
-    day3 = types.KeyboardButton(str((my_datetime + delta * 3).strftime("%a")))
-    day4 = types.KeyboardButton(str((my_datetime + delta * 4).strftime("%a")))
-    day5 = types.KeyboardButton(str((my_datetime + delta * 5).strftime("%a")))
-    day6 = types.KeyboardButton(str((my_datetime + delta * 6).strftime("%a")))
-    day7 = types.KeyboardButton(str((my_datetime + delta * 7).strftime("%a")))
+    for i in range(1,8):
+        day_formated=(my_datetime + delta * i).strftime("%a")
+        markup.add(types.KeyboardButton(f"{day_formated}"))
     back = types.KeyboardButton("Go back")
-    markup.add(day1)
-    markup.add(day2)
-    markup.add(day3)
-    markup.add(day4)
-    markup.add(day5)
-    markup.add(day6)
-    markup.add(day7)
     markup.add(back)
     bot.send_message(message.chat.id,
                      text="Choose any day of next week",
@@ -139,7 +120,7 @@ def next_week_days(message:str) -> None:
 def time_av(message:str) -> None:
     my_datetime = datetime.datetime.now()
     delta = datetime.timedelta(days=1)
-    for i in range(1, 7):
+    for i in range(1, 8):
         if message.text == ((datetime.datetime.now() + delta * i).strftime("%a")):
             delta_date = datetime.timedelta(days=int(i))
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
