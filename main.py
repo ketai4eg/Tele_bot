@@ -1,3 +1,8 @@
+"""This code used for running of simple telegram bot for scheduling of the manicure appointment.
+Config file should be properly formatted.
+The booking will be saved to JSON file."""
+
+
 import telebot
 from telebot import types
 import config
